@@ -393,7 +393,7 @@ function noteToMarkdown(item) {
       }
 
       if (para.innerHTML.startsWith('"')) {
-        noteString += `\t- > ${para.textContent}\n\n`;
+        noteString += `\t-\n\t > ${para.textContent}\n\n`;
         continue;
       }
 
@@ -406,7 +406,13 @@ function noteToMarkdown(item) {
         formatLists(para, "1.");
       }
 
-      noteString += `\t- > ${para.textContent}\n\n`; //para.textContent + "\n\n";
+      if (!para.textContent.trim()) {
+        // is empty or whitespace
+        // noteString += para.textContent + "\n";
+        continue;
+      }
+   
+      noteString += `\t-\n\t > ${para.textContent}\n\n`;
     }
   }
 

@@ -376,6 +376,8 @@ function noteToMarkdown(item) {
     }
 
     if (para.innerHTML) {
+      let format = false;
+      
       for (const link of para.getElementsByTagName("a")) {
         link.outerHTML = htmlLinkToMarkdown(link);
       }
@@ -400,13 +402,19 @@ function noteToMarkdown(item) {
       // Handle lists
       if (para.outerHTML.startsWith("<ul>")) {
         formatLists(para, getPref("bullet"));
+        format = true;
       }
 
       if (para.outerHTML.startsWith("<ol>")) {
         formatLists(para, "1.");
+        format = true;
       }
 
-      noteString += `\t- > ${para.textContent}\n\n`; //para.textContent + "\n\n";
+      if (format) {
+        noteString += `\t- > ${para.textContent}\n\n`;
+      } else {
+        noteString += para.textContent + "\n\n";
+      }
     }
   }
 

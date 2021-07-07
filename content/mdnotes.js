@@ -53,6 +53,8 @@ const zoteroMetadataTemplate = `{{title}}
 
 {{notes}}`;
 
+const etal = "et al."
+
 function getPref(pref_name) {
   return Zotero.Prefs.get(`extensions.mdnotes.${pref_name}`, true);
 }
@@ -214,6 +216,20 @@ function getCreatorArray(item, creatorType) {
   return creatorArray;
 }
 
+function makeShortAuthors(authors) {
+  var size = getPref("short_author_size");
+  if (authors.length <= size) {
+    return authors
+  }
+
+  var short = [];
+  for (let i = 0; i < size-1; i++) {
+    short.push(authors[i])
+  }
+  short.push(etal)
+  return short;
+}
+
 function getItemMetadata(item) {
   let metadata = {};
   let fields = Zotero.ItemFields.getItemTypeFields(item.getField("itemTypeID"));
@@ -248,6 +264,10 @@ function getItemMetadata(item) {
   metadata.mdnotesFileName = getMDNoteFileName(item);
   metadata.metadataFileName = getZMetadataFileName(item);
 
+  metadata.title_noformat = metadata.title
+  metadata.author_noformat = metadata.author
+  metadata.author_short = makeShortAuthors(metadata.author)
+
   return metadata;
 }
 
@@ -265,6 +285,10 @@ function formatLists(list, bullet) {
 function formatInternalLink(content, linkStyle) {
   linkStyle =
     typeof linkStyle !== "undefined" ? linkStyle : getPref("link_style");
+
+  if (content == etal) {
+    return `${content}`;
+  }
 
   if (linkStyle === "wiki") {
     return `[[${content}]]`;

@@ -393,7 +393,7 @@ function noteToMarkdown(item) {
       }
 
       if (para.innerHTML.startsWith('"')) {
-        noteString += `\t-> ${para.textContent}\n\n`;
+        noteString += `\t- > ${para.textContent}\n\n`;
         continue;
       }
 
@@ -406,7 +406,7 @@ function noteToMarkdown(item) {
         formatLists(para, "1.");
       }
 
-      noteString += para.textContent + "\n\n";
+      noteString += `\t- > ${para.textContent}\n\n`; //para.textContent + "\n\n";
     }
   }
 

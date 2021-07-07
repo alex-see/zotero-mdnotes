@@ -393,7 +393,7 @@ function noteToMarkdown(item) {
       }
 
       if (para.innerHTML.startsWith('"')) {
-        noteString += `> ${para.textContent}\n\n`;
+        noteString += `\t-> ${para.textContent}\n\n`;
         continue;
       }
 
